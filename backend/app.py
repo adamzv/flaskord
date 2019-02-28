@@ -1,11 +1,9 @@
-import os
 from datetime import datetime
 from flask import Flask, session, redirect, url_for, request, flash, render_template, jsonify
 from flask_socketio import SocketIO, emit
-import random
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "superbezpecnysecrét"  #os.getenv("SECRET_KEY")
+app.config["SECRET_KEY"] = "superbezpecnykluc"  # TODO generate proper secret key  #os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
 users = []
@@ -16,17 +14,7 @@ messages = [{"channel": channels[0], "message": "Test message", "author": "admin
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    """
-    if request.method == "POST":
-        channel = request.form.get("channel")
-        if channel in channels:
-            flash("Channel already exists!")
-            redirect(url_for("index"))
-        else:
-            channels.append(channel)
-    """
     if "username" in session:
-        print("INdex")
         return render_template("index.html", channels=channels, user=session["username"])
     else:
         return redirect(url_for("login"))
@@ -63,18 +51,22 @@ def msg(data):
     msg = data
 
     msg["time"] = str(datetime.now())[11:16]
-    global messages
     messages.append(msg)
+    # TODO new socketio emit - delete oldest message
+    check_messages_limit(msg.get("channel"))
     emit("new message", msg, broadcast=True)
 
 
 @socketio.on("create channel")
 def channel(data):
     chnnl = data["channel"]
-    global channels
     if chnnl not in channels:
-        print(channels)
         channels.append(chnnl)
-        print(channels, 2)
         emit("new channel", data, broadcast=True)
 
+
+def check_messages_limit(channel):
+    temp_messages = list(filter(lambda x: x.get("channel") == channel, messages))
+    if len(temp_messages) > 100:
+        # only 100 messages per channel are allowed, next function removes the oldest message from channel
+        next(messages.remove(x) for x in messages if x.get("channel") == channel)
