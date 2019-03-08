@@ -1,31 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <button class="button is-primary">This is a button</button>
+    <ChannelList />
+    <ChannelMessage />
   </div>
 </template>
 
+<script>
+import ChannelList from '@/components/ChannelList.vue'
+import ChannelMessage from '@/components/ChannelMessage.vue'
+
+export default {
+  components: {
+    ChannelList,
+    ChannelMessage
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+@import '~bulma/css/bulma.css';
 </style>

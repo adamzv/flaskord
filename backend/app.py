@@ -1,15 +1,17 @@
 from datetime import datetime
 from flask import Flask, session, redirect, url_for, request, flash, render_template, jsonify
 from flask_socketio import SocketIO, emit
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config["SECRET_KEY"] = "superbezpecnykluc"  # TODO generate proper secret key  #os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
 users = []
 channels = ["default", ]
-messages = [{"channel": channels[0], "message": "Test message", "author": "admin", "time": "18:41"},
-            {"channel": channels[0], "message": "Test message", "author": "admin", "time": "19:11"}, ]
+messages = [{"id": 0, "channel": channels[0], "message": "Test message", "author": "admin", "time": "18:41"},
+            {"id": 1, "channel": channels[0], "message": "Test message", "author": "admin", "time": "19:11"}, ]
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -41,20 +43,28 @@ def get_channel(channel):
         for i in range(0, len(messages)):
             if channel == messages[i]["channel"]:
                 mes.append(messages[i])
+        print(mes)
         return jsonify(messages=mes)
     else:
         return jsonify(messages=[])
 
 
+@app.route("/channels")
+def get_channels():
+    return jsonify(channels=channels)
+
+
 @socketio.on("send msg")
 def msg(data):
-    msg = data
+    msg_id = messages[-1]["id"]
+    msg_id += 1
 
-    msg["time"] = str(datetime.now())[11:16]
-    messages.append(msg)
+    data["time"] = str(datetime.now())[11:16]
+    data["id"] = msg_id
+    messages.append(data)
     # TODO new socketio emit - delete oldest message
-    check_messages_limit(msg.get("channel"))
-    emit("new message", msg, broadcast=True)
+    check_messages_limit(data.get("channel"))
+    emit("newMessage", data, broadcast=True)
 
 
 @socketio.on("create channel")
@@ -62,7 +72,7 @@ def channel(data):
     chnnl = data["channel"]
     if chnnl not in channels:
         channels.append(chnnl)
-        emit("new channel", data, broadcast=True)
+        emit("newChannel", data, broadcast=True)
 
 
 def check_messages_limit(channel):
