@@ -17,6 +17,7 @@ import ChannelService from '@/services/ChannelService.js'
 export default {
   data() {
     return {
+      lastChannel: 'default',
       channels: []
     }
   },
@@ -24,11 +25,22 @@ export default {
     ChannelService.getChannels()
       .then(response => {
         this.channels = response.data.channels
-        console.log(response)
       })
       .catch(error => {
         console.log(error.response)
       })
+  },
+  mounted() {
+    if (localStorage.lastChannel) {
+      if (this.lastChannel in this.channels === true) {
+        this.lastChannel = localStorage.lastChannel
+      }
+    }
+  },
+  watch: {
+    lastChannel(newChannel) {
+      localStorage.lastChannel = newChannel
+    }
   }
 }
 </script>

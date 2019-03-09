@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>#{{ last_channel }}</h1>
     <Message v-for="message in messages" :key="message.id" :message="message" />
     <input v-model="msg" />
     <button @click="send">Send</button>
@@ -13,16 +14,21 @@ import ChannelService from '@/services/ChannelService.js'
 export default {
   data() {
     return {
-      channel: 'default',
+      lastChannel: 'default',
       messages: [],
       msg: null,
       test: {}
     }
   },
   created() {
-    ChannelService.getMessages(this.channel).then(response => {
+    ChannelService.getMessages(this.lastChannel).then(response => {
       this.messages = response.data.messages
     })
+  },
+  mounted() {
+    if (localStorage.lastChannel) {
+      this.lastChannel = localStorage.lastChannel
+    }
   },
   components: {
     Message
@@ -42,11 +48,10 @@ export default {
   methods: {
     send() {
       this.$socket.emit('send msg', {
-        channel: 'default',
+        channel: this.lastChannel,
         message: this.msg,
         author: 'admin'
       })
-      console.log(this.msg)
     }
   }
 }
