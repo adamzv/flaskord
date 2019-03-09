@@ -1,23 +1,28 @@
 <template>
   <div>
     <h2 class="title">#{{ lastChannel }}</h2>
-    <div class="height-container">
+    <div id="chat" class="card height-container">
       <Message
         v-for="message in messages"
         :key="message.id"
         :message="message"
       />
     </div>
-
-    <input v-model="msg" />
-    <button @click="send">Send</button>
+    <br />
+    <div class="field is-grouped">
+      <div class="control is-expanded">
+        <input class="input is-primary" v-model="msg" />
+      </div>
+      <div class="control">
+        <button class="button is-primary" @click="send">Send</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Message from '@/components/Message.vue'
 import ChannelService from '@/services/ChannelService.js'
-// vue-cookie? vue-session? ziska author a channel
 export default {
   data() {
     return {
@@ -70,6 +75,12 @@ export default {
   watch: {
     lastChannel(newChannel) {
       localStorage.lastChannel = newChannel
+    },
+    messages() {
+      this.$nextTick(() => {
+        var container = this.$el.querySelector('#chat')
+        container.scrollTop = container.scrollHeight + 500
+      })
     }
   }
 }

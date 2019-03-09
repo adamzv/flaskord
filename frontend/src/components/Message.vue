@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="box tuning">
+    <div class="box padding">
       <article class="media">
         <div class="media-content">
           <div class="content">
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style>
-.tuning {
+.padding {
   padding: 1rem;
 }
 </style>
