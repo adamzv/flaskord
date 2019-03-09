@@ -1,7 +1,8 @@
 from datetime import datetime
-from flask import Flask, session, redirect, url_for, request, flash, render_template, jsonify
+from flask import Flask, session, request, render_template, jsonify, send_file, current_app
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -14,13 +15,16 @@ channels = ["default", ]
 messages = [{"id": 0, "channel": channels[0], "message": "Test message", "author": "admin", "time": "18:41"},
             {"id": 1, "channel": channels[0], "message": "Test message", "author": "admin", "time": "19:11"}, ]
 
+APP_DIR = os.path.dirname(__file__)
+DIST_DIR = os.path.join(APP_DIR, 'dist')
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    if "username" in session:
-        return render_template("index.html", channels=channels, user=session["username"])
-    else:
-        return redirect(url_for("login"))
+    dist_path = os.path.join(DIST_DIR, "index.html")
+    print(DIST_DIR)
+    print(dist_path)
+    return send_file(dist_path)
 
 
 @app.route("/login", methods=["GET", "POST"])
