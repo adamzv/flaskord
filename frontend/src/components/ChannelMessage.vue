@@ -1,7 +1,14 @@
 <template>
   <div>
-    <h1>#{{ lastChannel }}</h1>
-    <Message v-for="message in messages" :key="message.id" :message="message" />
+    <h2 class="title">#{{ lastChannel }}</h2>
+    <div class="height-container">
+      <Message
+        v-for="message in messages"
+        :key="message.id"
+        :message="message"
+      />
+    </div>
+
     <input v-model="msg" />
     <button @click="send">Send</button>
   </div>

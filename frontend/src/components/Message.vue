@@ -1,8 +1,19 @@
 <template>
   <div>
-    <div>
-      <p>{{ message.author }}</p>
-      <p>{{ message.message }} | {{ message.time }}</p>
+    <div class="box tuning">
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>{{ message.author }}:</strong>
+              {{ message.message }}
+            </p>
+            <div class="level-right">
+              <p>{{ message.time }}</p>
+            </div>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </template>
@@ -15,4 +26,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.tuning {
+  padding: 1rem;
+}
+</style>

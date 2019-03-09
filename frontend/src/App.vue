@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="columns">
-      <div class="column">
+      <div class="column is-one-third">
         <ChannelList />
       </div>
       <div class="column">
@@ -23,6 +23,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="css">
+@import './assets/styles/styles.css';
 @import '~bulma/css/bulma.css';
 </style>

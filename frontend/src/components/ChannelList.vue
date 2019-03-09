@@ -1,14 +1,18 @@
 <template>
   <div>
-    <nav class="panel">
-      <a
-        class="panel-block is-active"
-        v-for="channel in channels"
-        :key="channel"
-        @click="selectChannel(channel)"
-        >{{ channel }}</a
-      >
-    </nav>
+    <h2 class="title">Channels</h2>
+    <div class="height-container">
+      <nav class="panel">
+        <a
+          class="panel-block is-active"
+          v-for="channel in channels"
+          :key="channel"
+          @click="selectChannel(channel)"
+          >{{ channel }}</a
+        >
+      </nav>
+    </div>
+
     <input v-model="enterChannel" />
     <button @click="createChannel">Create channel</button>
   </div>
