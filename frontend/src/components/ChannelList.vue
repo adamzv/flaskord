@@ -4,17 +4,30 @@
     <div class="height-container">
       <nav class="panel">
         <a
-          class="panel-block is-active"
+          class="panel-block"
           v-for="channel in channels"
           :key="channel"
+          v-bind:class="{ 'is-active': channel === lastChannel }"
           @click="selectChannel(channel)"
           >{{ channel }}</a
         >
       </nav>
     </div>
-
-    <input v-model="enterChannel" />
-    <button @click="createChannel">Create channel</button>
+    <br />
+    <div class="field is-grouped">
+      <div class="control is-expanded">
+        <input
+          class="input is-primary"
+          v-model="enterChannel"
+          @keyup.enter="createChannel"
+        />
+      </div>
+      <div class="control">
+        <button class="button is-primary" @click="createChannel">
+          Create channel
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -63,7 +76,6 @@ export default {
   },
   sockets: {
     newChannel(data) {
-      this.lastChannel = data.channel
       this.channels.push(data.channel)
     }
   }

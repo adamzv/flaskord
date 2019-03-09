@@ -15,5 +15,8 @@ export default {
   },
   getMessages(channel) {
     return apiClient.get('/' + channel)
+  },
+  postUsername(usr) {
+    return apiClient.post('/login', { username: usr })
   }
 }

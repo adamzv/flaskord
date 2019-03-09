@@ -25,14 +25,20 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form.get("username")
+        #username = request.form.get("username")
+        username = request.get_json(silent=True).get("username")
+        print(username)
         if username in users:
+            """
             flash("Username is already taken.")
             return redirect(url_for("login"))
+            """
+            return jsonify(status="Username is already taken.")
         else:
             session["username"] = username
             users.append(username)
-            return redirect(url_for("index"))
+            # return redirect(url_for("index"))
+            return jsonify(status="ok", username=username)
     return render_template("login.html")
 
 
@@ -62,7 +68,6 @@ def msg(data):
     data["time"] = str(datetime.now())[11:16]
     data["id"] = msg_id
     messages.append(data)
-    # TODO new socketio emit - delete oldest message
     check_messages_limit(data.get("channel"))
     emit("newMessage", data, broadcast=True)
 
