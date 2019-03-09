@@ -9,7 +9,7 @@ Vue.config.productionTip = false
 Vue.use(
   new VueSocketIO({
     debug: true,
-    connection: `http://localhost:${process.env.PORT}`, //'http://127.0.0.1:5000/',
+    connection: "http://localhost:" + (process.env.PORT | 35433), //'http://127.0.0.1:5000/',
     options: { path: '/socket.io/' }
   })
 )
