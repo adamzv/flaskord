@@ -84,3 +84,7 @@ def check_messages_limit(channel):
     if len(temp_messages) > 100:
         # only 100 messages per channel are allowed, next function removes the oldest message from channel
         next(messages.remove(x) for x in messages if x.get("channel") == channel)
+
+
+if __name__ == "__main__":
+    socketio.run(app)
