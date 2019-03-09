@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, session, request, render_template, jsonify, send_file, current_app
+from flask import Flask, session, request, render_template, jsonify, send_from_directory
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 import os
@@ -15,16 +15,10 @@ channels = ["default", ]
 messages = [{"id": 0, "channel": channels[0], "message": "Test message", "author": "admin", "time": "18:41"},
             {"id": 1, "channel": channels[0], "message": "Test message", "author": "admin", "time": "19:11"}, ]
 
-APP_DIR = os.path.dirname(__file__)
-DIST_DIR = os.path.join(APP_DIR, 'dist')
-
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    dist_path = os.path.join(DIST_DIR, "index.html")
-    print(DIST_DIR)
-    print(dist_path)
-    return send_file(dist_path)
+    return send_from_directory("dist", "index.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
