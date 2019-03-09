@@ -4,7 +4,7 @@ from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 CORS(app)
 app.config["FLASK_ENV"] = os.getenv("FLASK_ENV", "production")
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET", "Secret")
@@ -18,7 +18,7 @@ messages = [{"id": 0, "channel": channels[0], "message": "Test message", "author
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    return send_from_directory("dist", "index.html")
+    return app.send_static_file("index.html")#send_from_directory("dist", "index.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
