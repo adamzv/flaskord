@@ -5,7 +5,8 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-app.config["SECRET_KEY"] = "superbezpecnykluc"  # TODO generate proper secret key  #os.getenv("SECRET_KEY")
+app.config["FLASK_ENV"] = os.getenv("FLASK_ENV", "production")
+app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET", "Secret")
 socketio = SocketIO(app)
 
 users = []
