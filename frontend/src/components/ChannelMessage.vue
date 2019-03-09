@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>#{{ last_channel }}</h1>
+    <h1>#{{ lastChannel }}</h1>
     <Message v-for="message in messages" :key="message.id" :message="message" />
     <input v-model="msg" />
     <button @click="send">Send</button>
@@ -16,8 +16,7 @@ export default {
     return {
       lastChannel: 'default',
       messages: [],
-      msg: null,
-      test: {}
+      msg: null
     }
   },
   created() {
@@ -26,6 +25,13 @@ export default {
     })
   },
   mounted() {
+    // using root Vue instance as global Event Hub to pass selected channel from ChannelList.vue component
+    this.$root.$on('change_selected_channel', channel => {
+      this.lastChannel = channel
+      ChannelService.getMessages(channel).then(response => {
+        this.messages = response.data.messages
+      })
+    })
     if (localStorage.lastChannel) {
       this.lastChannel = localStorage.lastChannel
     }
@@ -41,7 +47,6 @@ export default {
       this.message = []
     },
     newMessage(data) {
-      console.log(data)
       this.messages.push(data)
     }
   },
@@ -52,6 +57,12 @@ export default {
         message: this.msg,
         author: 'admin'
       })
+      this.msg = null
+    }
+  },
+  watch: {
+    lastChannel(newChannel) {
+      localStorage.lastChannel = newChannel
     }
   }
 }

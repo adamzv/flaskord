@@ -1,8 +1,13 @@
 <template>
   <div id="app">
-    <button class="button is-primary">This is a button</button>
-    <ChannelList />
-    <ChannelMessage />
+    <div class="columns">
+      <div class="column">
+        <ChannelList />
+      </div>
+      <div class="column">
+        <ChannelMessage />
+      </div>
+    </div>
   </div>
 </template>
 

@@ -2,7 +2,7 @@
   <div>
     <div>
       <p>{{ message.author }}</p>
-      <p>{{ message.message }}</p>
+      <p>{{ message.message }} | {{ message.time }}</p>
     </div>
   </div>
 </template>

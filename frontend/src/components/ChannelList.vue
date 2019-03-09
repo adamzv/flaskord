@@ -5,9 +5,12 @@
         class="panel-block is-active"
         v-for="channel in channels"
         :key="channel"
+        @click="selectChannel(channel)"
         >{{ channel }}</a
       >
     </nav>
+    <input v-model="enterChannel" />
+    <button @click="createChannel">Create channel</button>
   </div>
 </template>
 
@@ -17,6 +20,7 @@ import ChannelService from '@/services/ChannelService.js'
 export default {
   data() {
     return {
+      enterChannel: null,
       lastChannel: 'default',
       channels: []
     }
@@ -40,6 +44,23 @@ export default {
   watch: {
     lastChannel(newChannel) {
       localStorage.lastChannel = newChannel
+    }
+  },
+  methods: {
+    createChannel() {
+      this.$socket.emit('create channel', { channel: this.enterChannel })
+      this.enterChannel = null
+    },
+    selectChannel(channel) {
+      console.log(channel)
+      this.lastChannel = channel
+      this.$root.$emit('change_selected_channel', channel)
+    }
+  },
+  sockets: {
+    newChannel(data) {
+      this.lastChannel = data.channel
+      this.channels.push(data.channel)
     }
   }
 }
