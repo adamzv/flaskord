@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, session, request, render_template, jsonify, send_from_directory
+from flask import Flask, session, request, render_template, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 import os
@@ -18,13 +18,12 @@ messages = [{"id": 0, "channel": channels[0], "message": "Test message", "author
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    return app.send_static_file("index.html")#send_from_directory("dist", "index.html")
+    return app.send_static_file("index.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        #username = request.form.get("username")
         username = request.get_json(silent=True).get("username")
         print(username)
         if username in users:
@@ -63,8 +62,8 @@ def get_channels():
 def msg(data):
     msg_id = messages[-1]["id"]
     msg_id += 1
-
-    data["time"] = str(datetime.now())[11:16]
+    # Vue frontend will handle conversion to local time
+    data["time"] = str(datetime.utcnow().isoformat())
     data["id"] = msg_id
     messages.append(data)
     check_messages_limit(data.get("channel"))

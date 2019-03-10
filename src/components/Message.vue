@@ -9,7 +9,7 @@
               {{ message.message }}
             </p>
             <div class="level-right">
-              <p>{{ message.time }}</p>
+              <p>{{ fixedTime }}</p>
             </div>
           </div>
         </div>
@@ -20,8 +20,20 @@
 
 <script>
 export default {
+  data() {
+    return {
+      fixedTime: null
+    }
+  },
   props: {
     message: Object
+  },
+  created() {
+    // I could not convert message.time into local time with moment vue filter
+    this.fixedTime = this.$moment
+      .utc(this.message.time)
+      .local()
+      .format('MMM Do [|] HH:mm')
   }
 }
 </script>

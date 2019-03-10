@@ -9,10 +9,13 @@ Vue.config.productionTip = false
 Vue.use(
   new VueSocketIO({
     debug: true,
-    connection: "/", //'http://127.0.0.1:5000/',
+    connection:
+      process.env.NODE_ENV === 'production' ? '/' : 'http://127.0.0.1:5000/',
     options: { path: '/socket.io/' }
   })
 )
+
+Vue.use(require('vue-moment'))
 
 new Vue({
   router,

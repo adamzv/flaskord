@@ -57,9 +57,6 @@ export default {
     Message
   },
   sockets: {
-    connect() {
-      console.log('connected')
-    },
     disconnect() {
       this.message = []
     },

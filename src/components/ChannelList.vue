@@ -43,13 +43,9 @@ export default {
     }
   },
   created() {
-    ChannelService.getChannels()
-      .then(response => {
-        this.channels = response.data.channels
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
+    ChannelService.getChannels().then(response => {
+      this.channels = response.data.channels
+    })
   },
   mounted() {
     if (localStorage.lastChannel) {
@@ -69,7 +65,6 @@ export default {
       this.enterChannel = null
     },
     selectChannel(channel) {
-      console.log(channel)
       this.lastChannel = channel
       this.$root.$emit('change_selected_channel', channel)
     }
