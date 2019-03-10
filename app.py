@@ -12,8 +12,7 @@ socketio = SocketIO(app)
 
 users = []
 channels = ["default", ]
-messages = [{"id": 0, "channel": channels[0], "message": "Test message", "author": "admin", "time": "18:41"},
-            {"id": 1, "channel": channels[0], "message": "Test message", "author": "admin", "time": "19:11"}, ]
+messages = [{"id": 0, "channel": channels[0], "message": "Welcome!", "author": "admin", "time": "2019-03-10T13:44:26.205700"},]
 
 
 @app.route("/", methods=["GET", "POST"])
