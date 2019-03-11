@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-  baseURL: '/',
+  baseURL:
+    process.env.NODE_ENV === 'production' ? '/' : 'http://127.0.0.1:5000/',
   withCredentials: false,
   headers: {
     Accept: 'application/json',
