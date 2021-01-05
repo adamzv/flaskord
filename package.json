@@ -9,7 +9,7 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "bulma": "^0.7.5",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.10",
